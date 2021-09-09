@@ -2,6 +2,7 @@ package com.example.e_shop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,14 +15,20 @@ import android.widget.Toast;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+
+
 public class ProductDetailsActivity extends AppCompatActivity {
-    TextView  titleTV,qtyTV,priceTV,descriptionTV;
+    TextView  titleTV,qtyTV,priceTV ,descriptionTV ,counterTV;
     ImageView imageView;
-    Button backButton;
+    Button backButton,plusBtn,minusBtn;
     Integer productId;
-    String productName, productCat, productPrice,productDescription;
+    String productName;
+    String productCat;
+    double productPrice;
+    String productDescription;
     String imageUrl;
     ProgressBar progressBar;
+    int c=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
         descriptionTV=findViewById(R.id.desctv);
         progressBar=findViewById(R.id.progressBar);
         backButton=findViewById(R.id.back);
+        plusBtn=findViewById(R.id.plusBTN);
+        minusBtn=findViewById(R.id.minusBTN);
+        counterTV=findViewById(R.id.counterTV);
+
+        plusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                c++;
+                priceTV.setText((productPrice*c)+" $");
+                counterTV.setText(c+"");            }
+        });
+        minusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (c>1){
+                    c--;
+                    priceTV.setText((productPrice*c)+" $");
+                    counterTV.setText(c+"");                }
+            }
+        });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,8 +72,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         setData();
     }
     void setData(){
+            counterTV.setText(c+"");
             titleTV.setText(productName);
-           priceTV.setText(productPrice+" $");
+           priceTV.setText((productPrice*c)+" $");
            descriptionTV.setText(productDescription);
         Picasso.get().load(imageUrl).into(imageView, new Callback() {
             @Override
@@ -74,7 +102,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             productId=getIntent().getIntExtra("productId",1);
             productName=getIntent().getStringExtra("productName");
             productCat =getIntent().getStringExtra("productCat");
-            productPrice=getIntent().getStringExtra("productPrice");
+            productPrice=getIntent().getDoubleExtra("productPrice",0.0);
             productDescription=getIntent().getStringExtra("productDescription");
             imageUrl=getIntent().getStringExtra("imageUrl");
 

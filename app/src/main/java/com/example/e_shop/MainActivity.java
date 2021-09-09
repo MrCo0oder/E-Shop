@@ -1,7 +1,13 @@
 package com.example.e_shop;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -14,9 +20,13 @@ import com.example.e_shop.adapter.ProductsAdapter;
 import com.example.e_shop.api.ApiInterface;
 import com.example.e_shop.model.ProductCategory;
 import com.example.e_shop.model.Products;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,77 +35,157 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-   CategoryAdapter CategoryAdapter;
+    CategoryAdapter CategoryAdapter;
     RecyclerView productCategoryRV;
     ProgressBar progressBar;
+    ExtendedFloatingActionButton cartFAB,signOut;
+    ImageView imageView;
+    Boolean flag;
+    List<Products> productsList = new ArrayList<>();
+    List<ProductCategory> productsCategoriesList = new ArrayList<>();
     private ProductsAdapter productsAdapter;
-    List<Products>productsList=new ArrayList<>();
-    List<ProductCategory> productsCategoriesList=new ArrayList<>();
     private RecyclerView productsRV;
+    String[] emoj = new String[]{"Welcome 😎😍","😚🥳🛒","🎃🎉✨","🤩😉🤗","🤑🤑🤑"};
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar=findViewById(R.id.progressBar3);
+        mAuth=FirebaseAuth.getInstance();
+        progressBar = findViewById(R.id.progressBar3);
+        cartFAB = findViewById(R.id.floatingActionButton);
+        signOut= findViewById(R.id.signOutFAB);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
 
-        Retrofit retrofit=new Retrofit.Builder().baseUrl("https://fakestoreapi.com/").addConverterFactory(GsonConverterFactory.create()).build();
-        ApiInterface apiInterface=retrofit.create(ApiInterface.class);
-        final Call<List<Products>> productsCall=apiInterface.getAllProducts();
+            }
+        });
+        cartFAB.shrink();
+        flag = true;
+        cartFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!flag) {
+                    cartFAB.extend();
+                    flag = true;
+                } else {
+                    cartFAB.shrink();
+                    flag = false;
+                }
+            }
+        });
+        imageView=findViewById(R.id.feelingimageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int rnd = new Random().nextInt(emoj.length);
+                Toast.makeText(getApplicationContext(),emoj[rnd],Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://fakestoreapi.com/").addConverterFactory(GsonConverterFactory.create()).build();
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        final Call<List<Products>> productsCall = apiInterface.getAllProducts();
         productsCall.enqueue(new Callback<List<Products>>() {
             @Override
             public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
                 if (progressBar != null) {
                     progressBar.setVisibility(View.GONE);
                 }
-                productsList=response.body();
+                productsList = response.body();
                 setProductsRecycler(productsList);
 
             }
 
             @Override
             public void onFailure(Call<List<Products>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-       final Call<List<String>> productsCategoriesCall=apiInterface.getAllProductsCategories();
+        final Call<List<String>> productsCategoriesCall = apiInterface.getAllProductsCategories();
         productsCategoriesCall.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                System.out.println(response.body().get(0)+" "+response.body().get(2));
-                productsCategoriesList.add(new ProductCategory(response.body().get(0),"https://freepngimg.com/thumb/computer/32997-1-gaming-computer-file.png"));
-                productsCategoriesList.add(new ProductCategory(response.body().get(1),"https://freepngimg.com/thumb/ring/34315-3-heart-ring-photos.png"));
-                productsCategoriesList.add(new ProductCategory(response.body().get(2),"https://freepngimg.com/thumb/dress%20shirt/2-dress-shirt-png-image.png"));
-                productsCategoriesList.add(new ProductCategory(response.body().get(3),"https://freepngimg.com/thumb/dress%20shirt/13-dress-shirt-png-image.png"));
-                System.out.println(productsCategoriesList.get(0).getCategoryName());
+                assert response.body() != null;
+                productsCategoriesList.add(new ProductCategory(response.body().get(0),
+                        "https://freepngimg.com/thumb/computer/32997-1-gaming-computer-file.png"));
+                productsCategoriesList.add(new ProductCategory(response.body().get(1),
+                        "https://freepngimg.com/thumb/ring/34315-3-heart-ring-photos.png"));
+                productsCategoriesList.add(new ProductCategory(response.body().get(2),
+                        "https://freepngimg.com/thumb/dress%20shirt/2-dress-shirt-png-image.png"));
+                productsCategoriesList.add(new ProductCategory(response.body().get(3),
+                        "https://freepngimg.com/thumb/dress%20shirt/13-dress-shirt-png-image.png"));
+
                 setProductCategoryAdapterRecycler((ArrayList<ProductCategory>) productsCategoriesList);
             }
 
             @Override
             public void onFailure(Call<List<String>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
 
-
     }
-    private void setProductCategoryAdapterRecycler(ArrayList<ProductCategory> productCategoryList){
+
+    private void setProductCategoryAdapterRecycler(ArrayList<ProductCategory> productCategoryList) {
 
         productCategoryRV = findViewById(R.id.cat_rv);
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         productCategoryRV.setHasFixedSize(true);
         productCategoryRV.setLayoutManager(layoutManager);
         CategoryAdapter = new CategoryAdapter(this, productCategoryList);
         productCategoryRV.setAdapter(CategoryAdapter);
 
     }
-    private void setProductsRecycler(List<Products> productsList){
+
+    private void setProductsRecycler(List<Products> productsList) {
 
         productsRV = findViewById(R.id.product_rv);
-        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         productsRV.setLayoutManager(layoutManager);
         productsAdapter = new ProductsAdapter(this, productsList);
         productsRV.setAdapter(productsAdapter);
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Exit Application?");
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                moveTaskToBack(true);
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                            }
+                        })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
 }

@@ -4,47 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="#EDA3B5"
     tools:context=".ProductDetailsActivity">
 
 
-
-
-    <Button  android:id="@+id/back"
+    <Button
+        android:id="@+id/back"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:checkable="false"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         app:cornerRadius="20dp"
-        app:icon="@drawable/ic_back"
+        app:icon="@drawable/back_arrow"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconTint="#FFFFFF"
-        app:rippleColor="#FFFFFF"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        app:rippleColor="#FFFFFF" />
 
-    <ImageView
+    <Button
         android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="TODO"
+        app:icon="@drawable/ic_more"
+        app:iconTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_more"
-        android:contentDescription="TODO" />
+        app:rippleColor="#FFFFFF" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:background="@drawable/details_activity_bg"
+        android:background="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -74,30 +75,32 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/rubik_bold"
-                    android:text="blablabla"
+                    android:fontFamily="@font/playfair_display_bold"
+                    android:text="Title"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/price_details_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/rubik_bold"
+                    android:fontFamily="@font/rajdhani_semibold"
                     android:text="price"
                     android:textColor="#43A047"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/minusBTN"
                         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -113,18 +116,18 @@
 
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/counterTV"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:fontFamily="@font/rajdhani_semibold"
                         android:gravity="center"
                         android:text="5" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/plusBTN"
                         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-
                         android:checkable="false"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
@@ -134,45 +137,43 @@
                         app:iconPadding="0dp"
                         app:iconTint="@color/colorAccent"
                         app:rippleColor="@color/colorAccent" />
-
-
                 </LinearLayout>
 
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:fontFamily="@font/rubik_bold"
+                    android:fontFamily="@font/playfair_display_bold"
                     android:text="Description:"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/desctv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/rubik"
+                    android:fontFamily="@font/playfair_display"
                     android:textSize="16sp" />
 
             </LinearLayout>
-
-
         </ScrollView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="TODO"
+
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
