@@ -1,17 +1,15 @@
 package com.example.e_shop;
 
-import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Process;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -19,106 +17,79 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
+import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends AppCompatActivity {
-Button loginButton;
-    TextInputLayout emailET,passwordET;
-Boolean flag=false;
-    private FirebaseAuth mAuth;
-    FirebaseUser currentUser ;
+    FirebaseUser currentUser;
+    TextInputLayout emailET;
+    Button loginButton;
+    FirebaseAuth mAuth;
+    TextInputLayout passwordET;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        emailET = findViewById(R.id.emailTextField);
+        passwordET = findViewById(R.id.loginPasswordTextField);
+        FirebaseAuth instance = FirebaseAuth.getInstance();
+        mAuth = instance;
+        currentUser = instance.getCurrentUser();
+        loginButton = findViewById(R.id.loginBtn);
 
-        emailET=findViewById(R.id.emailTextField);
-        passwordET=findViewById(R.id.loginPasswordTextField);
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-        loginButton =findViewById(R.id.loginBtn);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+        loginButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                String mail,pass;
-                mail=emailET.getEditText().getText().toString().trim();
-                pass=passwordET.getEditText().getText().toString().trim();
-                if (!(mail.equals("")) && !(pass.equals("")))
-                {
-                   mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                       @Override
-                       public void onComplete(@NonNull Task<AuthResult> task) {
-                           if(task.isSuccessful()){
-                               Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                               startActivity(intent);
-                           }else
-                           {
-                               Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(),
-                                       Toast.LENGTH_SHORT).show();
-
-                           }
-                       }
-                   });
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "failed",
-                            Toast.LENGTH_SHORT).show();
+                String mail = emailET.getEditText().getText().toString().trim();
+                String pass = passwordET.getEditText().getText().toString().trim();
+                String str = "";
+                if (mail.equals(str) || pass.equals(str)) {
+                    Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                } else {
+                    mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        public void onComplete(@NotNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                LoginActivity.this.startActivity(new Intent(LoginActivity.this.getApplicationContext(), MainActivity.class));
+                                return;
+                            }
+                            Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
-
-
     }
 
     public void forgetPassword(View view) {
-        Toast.makeText(this,"Ok 😏",Toast.LENGTH_SHORT).show();
+        new FDialog().show(getSupportFragmentManager(), "ex dialog");
     }
 
     public void signup(View view) {
-
-        Intent intent=new Intent(getApplicationContext(),SignUpActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
     }
 
-    @Override
     public void onBackPressed() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        Builder alertDialogBuilder = new Builder(this);
         alertDialogBuilder.setTitle("Exit Application?");
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                moveTaskToBack(true);
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(1);
-                            }
-                        })
-
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        String str = "No";
+        alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                LoginActivity.this.moveTaskToBack(true);
+                Process.killProcess(Process.myPid());
+                System.exit(1);
+            }
+        }).setNegativeButton(str, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.create().show();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(currentUser!=null)
-        {
-            Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-            startActivity(intent);
-        }
 
+    public void onStart() {
+        super.onStart();
+        if (this.currentUser != null) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
     }
 
     public void login(View view) {

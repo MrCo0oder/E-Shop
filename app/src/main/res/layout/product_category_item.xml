@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
     android:clickable="true"
-    android:elevation="5dp"
     android:focusable="true"
     app:cardBackgroundColor="@color/gray"
     app:cardCornerRadius="20dp"
-    app:cardElevation="10dp"
-    app:cardMaxElevation="12dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -41,10 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/playfair_display"
-            android:text="Most popular"
+            android:fontFamily="@font/rajdhani_semibold"
             android:textAllCaps="true"
-            android:textColor="#373131"
+            android:textColor="@color/fontsColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,15 +48,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progressBar4"
-            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminate="true"
             app:layout_constraintBottom_toBottomOf="@+id/cat_imageView"
             app:layout_constraintEnd_toEndOf="@+id/cat_imageView"
             app:layout_constraintStart_toStartOf="@+id/cat_imageView"
             app:layout_constraintTop_toTopOf="@+id/cat_imageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
 
