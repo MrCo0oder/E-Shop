@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NotNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 LoginActivity.this.startActivity(new Intent(LoginActivity.this.getApplicationContext(), MainActivity.class));
+                                finish();
                                 return;
                             }
                             Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -64,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signup(View view) {
         startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+        finish();
     }
 
     public void onBackPressed() {
@@ -89,10 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         if (this.currentUser != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
         }
-    }
-
-    public void login(View view) {
-
     }
 }

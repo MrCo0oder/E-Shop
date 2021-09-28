@@ -1,5 +1,4 @@
 package com.example.e_shop;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,31 +7,27 @@ import android.os.Process;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.e_shop.adapter.CategoryAdapter;
 import com.example.e_shop.adapter.ProductsAdapter;
 import com.example.e_shop.api.ApiInterface;
 import com.example.e_shop.model.ProductCategory;
 import com.example.e_shop.model.Products;
-
 import com.google.firebase.auth.FirebaseAuth;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,28 +40,32 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     String[] emoj = new String[]{"Welcome 😎😍", "😚🥳🛒", "🎃🎉✨", "🤩😉🤗", "🤑🤑🤑"};
     FirebaseAuth mAuth;
-    RecyclerView productCategoryRV;
+    RecyclerView productCategoryRV, productsRV;
     ProductsAdapter productsAdapter;
     List<ProductCategory> productsCategoriesList = new ArrayList();
     List<Products> productsList = new ArrayList();
-    RecyclerView productsRV;
-    ProgressBar progressBar;
-    ImageView imageView;
-    LottieAnimationView l;
+    ImageButton imageButton;
+    ImageView feelingsImageView, menuImageView;
+    LottieAnimationView lottieAnimationView;
+    Boolean isGrid = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        drawerLayout = findViewById(R.id.my_drawer_layout);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, R.string.nav_open, R.string.nav_close);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+        init();
 
-        mAuth = FirebaseAuth.getInstance();
-        //  progressBar =  findViewById(R.id.progressBar3);
-        l = findViewById(R.id.animationView);
-        imageView = findViewById(R.id.feelingsImageView);
-        imageView.setOnClickListener(new OnClickListener() {
+
+        menuImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+        imageButton.setVisibility(View.GONE);
+        imageButton.setImageResource(R.drawable.ic_grid);
+
+
+        feelingsImageView.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this.getApplicationContext(), MainActivity.this.emoj[new Random().nextInt(MainActivity.this.emoj.length)], Toast.LENGTH_SHORT).show();
             }
@@ -77,9 +76,10 @@ public class MainActivity extends AppCompatActivity {
         productsCall.enqueue(new Callback<List<Products>>() {
             @Override
             public void onResponse(@NotNull Call<List<Products>> call, @NotNull Response<List<Products>> response) {
-                if (l != null) {
-                    //progressBar.setVisibility(View.GONE);
-                    l.setVisibility(View.GONE);
+                if (lottieAnimationView != null) {
+
+                    lottieAnimationView.setVisibility(View.GONE);
+                    imageButton.setVisibility(View.VISIBLE);
                 }
                 productsList = response.body();
                 setProductsRecycler(productsList);
@@ -115,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void init() {
+        {
+            drawerLayout = findViewById(R.id.my_drawer_layout);
+            imageButton = findViewById(R.id.gridBTN);
+            mAuth = FirebaseAuth.getInstance();
+            lottieAnimationView = findViewById(R.id.animationView);
+            menuImageView = findViewById(R.id.menuImageView);
+            feelingsImageView = findViewById(R.id.feelingsImageView);
+        }
+    }
+
     private void setProductCategoryAdapterRecycler(ArrayList<ProductCategory> productCategoryList) {
         productCategoryRV = findViewById(R.id.cat_rv);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -135,12 +146,14 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            drawerLayout.closeDrawers();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void onBackPressed() {
+        drawerLayout.closeDrawers();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Exit Application?");
         String str = "No";
@@ -161,5 +174,31 @@ public class MainActivity extends AppCompatActivity {
     public void Logoutt(MenuItem item) {
         mAuth.signOut();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        drawerLayout.closeDrawers();
+        finish();
     }
+
+    public void gotoCart(MenuItem item) {
+        startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+        drawerLayout.closeDrawers();
+    }
+
+    public void switchM(View view) {
+        if (isGrid) {
+            imageButton.setImageResource(R.drawable.ic_grid);
+            productsRV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            productsAdapter = new ProductsAdapter(this, productsList);
+            productsRV.setAdapter(productsAdapter);
+            isGrid = false;
+        } else {
+            imageButton.setImageResource(R.drawable.ic_list);
+            productsRV.setLayoutManager(new GridLayoutManager(this, 2));
+            productsAdapter = new ProductsAdapter(this, productsList);
+            productsRV.setAdapter(productsAdapter);
+            isGrid = true;
+        }
+
+    }
+
+
 }

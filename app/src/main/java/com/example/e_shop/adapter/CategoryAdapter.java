@@ -53,7 +53,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
-        System.out.println(postsList.get(position).getImage());
     }
 
     @Override

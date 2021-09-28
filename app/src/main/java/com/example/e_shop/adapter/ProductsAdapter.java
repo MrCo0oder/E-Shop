@@ -2,6 +2,7 @@ package com.example.e_shop.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.e_shop.ProductDetailsActivity;
 import com.example.e_shop.R;
 import com.example.e_shop.model.Products;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 
@@ -27,7 +29,7 @@ import static com.example.e_shop.R.id.product_imgv;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
     Context context;
-    private List<Products> productsList;
+    private final List<Products> productsList;
 
 
     public ProductsAdapter(Context context, List<Products> productsList) {
@@ -47,12 +49,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public void onBindViewHolder(@NonNull final ProductsViewHolder holder, final int position) {
 
         holder.productName.setText(productsList.get(position).getTitle());
-        holder.productPrice.setText(productsList.get(position).getPrice()+" $");
-        holder.productQty.setText(productsList.get(position).getCategory());
+        holder.productPrice.setText(productsList.get(position).getPrice() + " $");
+        holder.productCat.setText(productsList.get(position).getCategory());
         String url=productsList.get(position).getImage();
-        Picasso.get().load(url).into(holder.productImage, new Callback() {
+        Picasso.get().load(url).networkPolicy(NetworkPolicy.OFFLINE).into(holder.productImage, new Callback() {
             @Override
             public void onSuccess() {
+
                 holder.progressBar.setVisibility(View.VISIBLE);
                 if (holder.progressBar != null) {
                     holder.progressBar.setVisibility(View.GONE);
@@ -61,7 +64,22 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
             @Override
             public void onError(Exception e) {
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
+
+                Picasso.get()
+                        .load(productsList.get(position).getImage())
+                        .into(holder.productImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Log.v("Picasso", "Could not fetch image");
+                                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        });
             }
         });
 
@@ -90,7 +108,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     public static final class ProductsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView productName,productPrice,productQty;
+        TextView productName, productPrice, productCat;
         ImageView productImage;
         CardView cardView;
         ProgressBar progressBar;
@@ -98,10 +116,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.product_name);
-            productPrice= itemView.findViewById(R.id.price_tv);
-            productImage=itemView.findViewById(product_imgv);
-            productQty=itemView.findViewById(R.id.Qty_tv);
-            cardView=itemView.findViewById(R.id.product_card);
+            productPrice = itemView.findViewById(R.id.price_tv);
+            productImage = itemView.findViewById(product_imgv);
+            productCat = itemView.findViewById(R.id.catTV);
+            cardView = itemView.findViewById(R.id.product_card);
             progressBar=itemView.findViewById(R.id.progressBar2);
 
         }

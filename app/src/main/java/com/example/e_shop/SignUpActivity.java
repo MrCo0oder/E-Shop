@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.e_shop.model.CartItem;
 import com.example.e_shop.model.Products;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +38,6 @@ public class SignUpActivity extends AppCompatActivity {
     TextInputLayout phoneET;
     Button signupBTN;
 
-    /* Access modifiers changed, original: protected */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
@@ -47,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         phoneET = findViewById(R.id.signupPhoneTextField);
         db = FirebaseFirestore.getInstance();
         FirebaseAuth instance = FirebaseAuth.getInstance();
+
         mAuth = instance;
         currentUser = instance.getCurrentUser();
 
@@ -66,10 +67,12 @@ public class SignUpActivity extends AppCompatActivity {
                             String str = "TAG";
                             if (task.isSuccessful()) {
                                 Log.d(str, "createUserWithEmail:success");
-                                FirebaseUser user = SignUpActivity.this.mAuth.getCurrentUser();
-                                db.collection("users").add(SignUpActivity.this.putUserData(name, phone, mail, null)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                db.collection("users").document(FirebaseAuth.getInstance().getUid())
+                                        .set(putUserData(name, phone, mail)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     public void onFailure(Exception e) {
@@ -77,6 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     }
                                 });
                                 startActivity(new Intent(SignUpActivity.this.getApplicationContext(), MainActivity.class));
+                                finish();
                                 return;
                             }
                             Log.w(str, "createUserWithEmail:failure", task.getException());
@@ -90,19 +94,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void login(View view) {
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
-    public void onStart() {
-        super.onStart();
-    }
 
-    /* Access modifiers changed, original: 0000 */
-    public Map<String, Object> putUserData(String name, String phone, String mail, ArrayList<Products> cart) {
+    public Map<String, Object> putUserData(String name, String phone, String mail) {
         Map<String, Object> user = new HashMap();
         user.put("name", name);
         user.put("phone", phone);
         user.put("mail", mail);
-        user.put("cart", cart);
         return user;
     }
 }
