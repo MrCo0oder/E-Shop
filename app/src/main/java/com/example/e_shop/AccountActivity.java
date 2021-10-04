@@ -3,6 +3,7 @@ package com.example.e_shop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class AccountActivity extends AppCompatActivity {
                                 selectedFragment = new OrdersFragment();
                                 break;
                         }
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, selectedFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, selectedFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
                     } catch (Exception e) {
                         Log.d("EEE", e.getLocalizedMessage());
                     }

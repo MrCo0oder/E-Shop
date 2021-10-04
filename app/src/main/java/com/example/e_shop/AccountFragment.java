@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -88,7 +89,11 @@ public class AccountFragment extends Fragment {
         editIB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Edit", Toast.LENGTH_SHORT).show();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new SettingsFragment())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null).commit();
+
             }
         });
         logoutIB.setOnClickListener(new View.OnClickListener() {
