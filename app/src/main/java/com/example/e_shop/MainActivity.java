@@ -1,5 +1,6 @@
 package com.example.e_shop;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,29 +41,49 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     String[] emoj = new String[]{"Welcome 😎😍", "😚🥳🛒", "🎃🎉✨", "🤩😉🤗", "🤑🤑🤑"};
     FirebaseAuth mAuth;
-    RecyclerView productCategoryRV, productsRV;
-    ProductsAdapter productsAdapter;
+    RecyclerView productCategoryRV;
+    static RecyclerView productsRV;
+    static ProductsAdapter productsAdapter;
     List<ProductCategory> productsCategoriesList = new ArrayList();
-    List<Products> productsList = new ArrayList();
-    ImageButton imageButton;
+    public static List<Products> productsList = new ArrayList();
+    ImageButton gridBTN;
     ImageView feelingsImageView, menuImageView;
     LottieAnimationView lottieAnimationView;
     Boolean isGrid = false;
+    static Context context;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-
-
+        gridBTN.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isGrid) {
+                    gridBTN.setImageResource(R.drawable.ic_grid);
+                    productsRV.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+                    productsAdapter = new ProductsAdapter(context, productsList);
+                    productsRV.setAdapter(productsAdapter);
+                    isGrid = false;
+                } else {
+                    gridBTN.setImageResource(R.drawable.ic_list);
+                    productsRV.setLayoutManager(new GridLayoutManager(context, 2));
+                    productsAdapter = new ProductsAdapter(context, productsList);
+                    productsRV.setAdapter(productsAdapter);
+                    isGrid = true;
+                }
+            }
+        });
+        productsRV = findViewById(R.id.product_rv);
+        context = this;
         menuImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        imageButton.setVisibility(View.GONE);
-        imageButton.setImageResource(R.drawable.ic_grid);
+        gridBTN.setVisibility(View.GONE);
+        gridBTN.setImageResource(R.drawable.ic_grid);
 
 
         feelingsImageView.setOnClickListener(new OnClickListener() {
@@ -79,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 if (lottieAnimationView != null) {
 
                     lottieAnimationView.setVisibility(View.GONE);
-                    imageButton.setVisibility(View.VISIBLE);
+                    gridBTN.setVisibility(View.VISIBLE);
                 }
                 productsList = response.body();
                 setProductsRecycler(productsList);
@@ -91,19 +112,20 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
         final Call<List<String>> productsCategoriesCall = apiInterface.getAllProductsCategories();
         productsCategoriesCall.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(@NotNull Call<List<String>> call, @NotNull Response<List<String>> response) {
                 assert response.body() != null;
                 productsCategoriesList.add(new ProductCategory(response.body().get(0),
-                        "https://freepngimg.com/thumb/computer/32997-1-gaming-computer-file.png"));
+                        "https://pngimg.com/uploads/computer_pc/computer_pc_PNG17486.png"));
                 productsCategoriesList.add(new ProductCategory(response.body().get(1),
-                        "https://freepngimg.com/thumb/ring/34315-3-heart-ring-photos.png"));
+                        "https://pngimg.com/uploads/jewelry/jewelry_PNG6792.png"));
                 productsCategoriesList.add(new ProductCategory(response.body().get(2),
-                        "https://freepngimg.com/thumb/dress%20shirt/2-dress-shirt-png-image.png"));
+                        "https://pngimg.com/uploads/jacket/jacket_PNG8043.png"));
                 productsCategoriesList.add(new ProductCategory(response.body().get(3),
-                        "https://freepngimg.com/thumb/dress%20shirt/13-dress-shirt-png-image.png"));
+                        "https://pngimg.com/uploads/dress/dress_PNG147.png"));
 
                 setProductCategoryAdapterRecycler((ArrayList<ProductCategory>) productsCategoriesList);
             }
@@ -118,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         {
             drawerLayout = findViewById(R.id.my_drawer_layout);
-            imageButton = findViewById(R.id.gridBTN);
             mAuth = FirebaseAuth.getInstance();
             lottieAnimationView = findViewById(R.id.animationView);
             menuImageView = findViewById(R.id.menuImageView);
             feelingsImageView = findViewById(R.id.feelingsImageView);
+            gridBTN = findViewById(R.id.gridBTN);
         }
     }
 
@@ -135,11 +157,10 @@ public class MainActivity extends AppCompatActivity {
         productCategoryRV.setAdapter(CategoryAdapter);
     }
 
-    private void setProductsRecycler(List<Products> productsList) {
-        productsRV = findViewById(R.id.product_rv);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+    public static void setProductsRecycler(List<Products> productsList) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         productsRV.setLayoutManager(layoutManager);
-        productsAdapter = new ProductsAdapter(this, productsList);
+        productsAdapter = new ProductsAdapter(context, productsList);
         productsRV.setAdapter(productsAdapter);
     }
 
@@ -183,22 +204,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawers();
     }
 
-    public void switchM(View view) {
-        if (isGrid) {
-            imageButton.setImageResource(R.drawable.ic_grid);
-            productsRV.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-            productsAdapter = new ProductsAdapter(this, productsList);
-            productsRV.setAdapter(productsAdapter);
-            isGrid = false;
-        } else {
-            imageButton.setImageResource(R.drawable.ic_list);
-            productsRV.setLayoutManager(new GridLayoutManager(this, 2));
-            productsAdapter = new ProductsAdapter(this, productsList);
-            productsRV.setAdapter(productsAdapter);
-            isGrid = true;
-        }
 
-    }
 
 
 }

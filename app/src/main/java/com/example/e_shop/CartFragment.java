@@ -17,10 +17,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.e_shop.model.CartItem;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,7 +57,7 @@ public class CartFragment extends Fragment {
                 .document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .collection("cart");
 
-        FirestoreRecyclerOptions<CartItem> options = new FirestoreRecyclerOptions.Builder<CartItem>()
+        final FirestoreRecyclerOptions<CartItem> options = new FirestoreRecyclerOptions.Builder<CartItem>()
                 .setQuery(query, CartItem.class)
                 .build();
 
@@ -75,6 +77,14 @@ public class CartFragment extends Fragment {
                 holder.remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        getSnapshots().getSnapshot(position).getReference().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                Toast.makeText(getActivity(), "Item removed from cart", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
 
                     }
                 });

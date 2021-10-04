@@ -47,11 +47,11 @@ public class LoginActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         public void onComplete(@NotNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                LoginActivity.this.startActivity(new Intent(LoginActivity.this.getApplicationContext(), MainActivity.class));
+                                startActivity(new Intent(LoginActivity.this.getApplicationContext(), MainActivity.class));
                                 finish();
                                 return;
                             }
-                            Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void forgetPassword(View view) {
-        new FDialog().show(getSupportFragmentManager(), "ex dialog");
+        new ForgetPasswordDialog().show(getSupportFragmentManager(), "forgetPassword dialog");
     }
 
     public void signup(View view) {
@@ -71,16 +71,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         Builder alertDialogBuilder = new Builder(this);
         alertDialogBuilder.setTitle("Exit Application?");
-        String str = "No";
         alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 LoginActivity.this.moveTaskToBack(true);
                 Process.killProcess(Process.myPid());
                 System.exit(1);
             }
-        }).setNegativeButton(str, new DialogInterface.OnClickListener() {
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
         alertDialogBuilder.create().show();
