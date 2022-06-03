@@ -1,35 +1,22 @@
 package com.example.e_shop;
 
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AccountActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.account_bnav);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
-                    new AccountFragment()).commit();
-        }
-    }
-
+    Context c;
     private final BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @SuppressLint("NonConstantResourceId")
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     try {
@@ -53,4 +40,41 @@ public class AccountActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        c = AccountActivity.this;
+        setContentView(R.layout.activity_account);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        if (savedInstanceState == null) {
+
+            if (getIntent().hasExtra("FLAG")) {
+                int flag = getIntent().getIntExtra("FLAG", 0);
+
+
+                switch (flag) {
+                    case 1:
+                        bottomNavigationView.setSelectedItemId(R.id.account_bnav);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                                new AccountFragment()).commit();
+                        break;
+                    case 2:
+                        bottomNavigationView.setSelectedItemId(R.id.cart_bnav);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                                new CartFragment()).commit();
+                        break;
+
+                }
+
+            }
+        } else {
+
+            bottomNavigationView.setSelectedItemId(R.id.account_bnav);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
+                    new AccountFragment()).commit();
+
+        }
+    }
 }

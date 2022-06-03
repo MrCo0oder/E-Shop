@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 public class ProductDetailsActivity extends AppCompatActivity {
     TextView titleTV, qtyTV, priceTV, descriptionTV, counterTV;
-    ImageView imageView;
+    PhotoView imageView;
     Button backButton, plusBtn, minusBtn, cart;
     Integer productId;
     String productName;
@@ -149,8 +150,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             productPrice=getIntent().getDoubleExtra("productPrice",0.0);
             productDescription=getIntent().getStringExtra("productDescription");
             imageUrl=getIntent().getStringExtra("imageUrl");
-
-
 
         }
         else

@@ -1,5 +1,5 @@
 package com.example.e_shop;
-
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +11,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.e_shop.model.CartItem;
 import com.example.e_shop.model.Products;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,9 +26,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,10 +42,15 @@ public class SignUpActivity extends AppCompatActivity {
     Button signupBTN;
     AutoCompleteTextView editTextFilledExposedDropdown;
     UserProfileChangeRequest profileUpdates;
+    ProgressDialog dialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        dialog = new ProgressDialog(SignUpActivity.this);
+        dialog.setMessage("SignUp...");
+        dialog.setCanceledOnTouchOutside(false);
+
         passwordET = findViewById(R.id.signupPasswordTextField);
         emailET = findViewById(R.id.signupEmailTextField);
         nameET = findViewById(R.id.signupnameTextField);
@@ -85,10 +85,14 @@ public class SignUpActivity extends AppCompatActivity {
                 if (mail.equals(str) || pass.equals(str) || name.equals(str) || phone.equals(str)) {
                     Toast.makeText(SignUpActivity.this, "failed.", Toast.LENGTH_SHORT).show();
                 } else {
+                    dialog.show();
+
                     mAuth.createUserWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        public void onComplete(@NotNull Task<AuthResult> task) {
+                        public void onComplete(Task<AuthResult> task) {
                             final String str = "TAG";
                             if (task.isSuccessful()) {
+
+                                dialog.dismiss();
                                 Log.d(str, "createUserWithEmail:success");
                                 currentUser = instance.getCurrentUser();
                                 db.collection("users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
@@ -115,6 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 finish();
                                 return;
                             }
+                            dialog.dismiss();
                             Log.w(str, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }

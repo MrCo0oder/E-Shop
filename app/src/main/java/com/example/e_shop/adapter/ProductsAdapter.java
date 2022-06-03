@@ -18,11 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.e_shop.ProductDetailsActivity;
 import com.example.e_shop.R;
 import com.example.e_shop.model.Products;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 
+import java.io.Serializable;
 import java.util.List;
 
 import static com.example.e_shop.R.id.product_imgv;
@@ -35,6 +37,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public ProductsAdapter(Context context, List<Products> productsList) {
         this.context = context;
         this.productsList = productsList;
+
         notifyDataSetChanged();
 
     }
@@ -87,14 +90,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(context, ProductDetailsActivity.class);
-
-                intent.putExtra("productId",productsList.get(position).getId());
-                intent.putExtra("productName",productsList.get(position).getTitle());
-                intent.putExtra("productCat",productsList.get(position).getCategory());
-                intent.putExtra("productPrice",productsList.get(position).getPrice());
-                intent.putExtra("productDescription",productsList.get(position).getDescription());
-                intent.putExtra("imageUrl",productsList.get(position).getImage());
+                Intent intent = new Intent(context, ProductDetailsActivity.class);
+                Products products = productsList.get(position);
+                intent.putExtra("p", products);
+                intent.putExtra("productId", productsList.get(position).getId());
+                intent.putExtra("productName", productsList.get(position).getTitle());
+                intent.putExtra("productCat", productsList.get(position).getCategory());
+                intent.putExtra("productPrice", productsList.get(position).getPrice());
+                intent.putExtra("productDescription", productsList.get(position).getDescription());
+                intent.putExtra("imageUrl", productsList.get(position).getImage());
                 context.startActivity(intent);
             }
         });

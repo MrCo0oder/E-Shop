@@ -1,6 +1,7 @@
 package com.example.e_shop;
 
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     FirebaseAuth mAuth;
     TextInputLayout passwordET;
+    ProgressDialog dialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = instance;
         currentUser = instance.getCurrentUser();
         loginButton = findViewById(R.id.loginBtn);
+        dialog = new ProgressDialog(LoginActivity.this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setMessage("Logging in...");
 
         loginButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -44,13 +49,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (mail.equals(str) || pass.equals(str)) {
                     Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_SHORT).show();
                 } else {
+                    dialog.show();
                     mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         public void onComplete(@NotNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                dialog.dismiss();
                                 startActivity(new Intent(LoginActivity.this.getApplicationContext(), MainActivity.class));
                                 finish();
                                 return;
                             }
+                            dialog.dismiss();
                             Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -70,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onBackPressed() {
         Builder alertDialogBuilder = new Builder(this);
-        alertDialogBuilder.setTitle("Exit Application?");
+        alertDialogBuilder.setTitle("Exit Application ?🥺");
         alertDialogBuilder.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 LoginActivity.this.moveTaskToBack(true);

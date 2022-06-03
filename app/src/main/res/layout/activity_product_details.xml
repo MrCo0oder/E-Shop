@@ -25,34 +25,43 @@
         app:iconTint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="#FFFFFF" />
+        app:rippleColor="#FFFFFF"
+        app:strokeColor="#3D5AFE" />
+
 
     <Button
-        android:id="@+id/imageView7"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:id="@+id/addtocartbtn"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:icon="@drawable/ic_more"
-        app:iconTint="#FFFFFF"
+        android:layout_marginBottom="8dp"
+        android:text="@string/add_to_cart"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_cart"
+        app:iconGravity="textEnd"
+        app:iconSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="#FFFFFF" />
-
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:elevation="20dp"
         app:cardCornerRadius="20dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addtocartbtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,7 +78,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/rajdhani_semibold"
                 android:maxLines="2"
-                android:text="Title"
+                android:text="@string/title"
                 android:textColor="@color/fontsColor"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -173,49 +182,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-            <Button
-                android:id="@+id/addtocartbtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="Add to cart"
-                app:icon="@drawable/ic_cart"
-                app:iconGravity="textEnd"
-                app:iconSize="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:scaleType="centerInside"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardVie"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="20dp"
+        app:cardCornerRadius="20dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/back">
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/imageView8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            tools:ignore="ContentDescription" />
+    </com.google.android.material.card.MaterialCardView>
+
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:indeterminate="true"
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-        app:layout_constraintEnd_toEndOf="@+id/imageView8"
-        app:layout_constraintStart_toStartOf="@+id/imageView8"
-        app:layout_constraintTop_toTopOf="@+id/imageView8" />
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@+id/materialCardVie"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardVie"
+        app:layout_constraintStart_toStartOf="@+id/materialCardVie"
+        app:layout_constraintTop_toTopOf="@+id/materialCardVie" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

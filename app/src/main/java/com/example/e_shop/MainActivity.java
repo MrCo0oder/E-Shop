@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.e_shop.adapter.CategoryAdapter;
 import com.example.e_shop.adapter.ProductsAdapter;
@@ -25,10 +26,14 @@ import com.example.e_shop.api.ApiInterface;
 import com.example.e_shop.model.ProductCategory;
 import com.example.e_shop.model.Products;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,30 +50,40 @@ public class MainActivity extends AppCompatActivity {
     static RecyclerView productsRV;
     static ProductsAdapter productsAdapter;
     List<ProductCategory> productsCategoriesList = new ArrayList();
-    public static List<Products> productsList = new ArrayList();
+    public List<Products> productsList = new ArrayList();
     ImageButton gridBTN;
-    ImageView feelingsImageView, menuImageView;
+    ImageView feelingsImageView, menuImageView, profilePic;
     LottieAnimationView lottieAnimationView;
     Boolean isGrid = false;
+    int flag = 0;
     static Context context;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        Picasso.get().load(mAuth.getCurrentUser().getPhotoUrl()).placeholder(R.drawable.profilepicph).into(profilePic, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+
         gridBTN.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isGrid) {
                     gridBTN.setImageResource(R.drawable.ic_grid);
                     productsRV.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-                    productsAdapter = new ProductsAdapter(context, productsList);
                     productsRV.setAdapter(productsAdapter);
                     isGrid = false;
                 } else {
                     gridBTN.setImageResource(R.drawable.ic_list);
                     productsRV.setLayoutManager(new GridLayoutManager(context, 2));
-                    productsAdapter = new ProductsAdapter(context, productsList);
                     productsRV.setAdapter(productsAdapter);
                     isGrid = true;
                 }
@@ -84,16 +99,18 @@ public class MainActivity extends AppCompatActivity {
         });
         gridBTN.setVisibility(View.GONE);
         gridBTN.setImageResource(R.drawable.ic_grid);
-
-
         feelingsImageView.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this.getApplicationContext(), MainActivity.this.emoj[new Random().nextInt(MainActivity.this.emoj.length)], Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this.getApplicationContext(),
+                        MainActivity.this.emoj[new Random().nextInt(MainActivity.this.emoj.length)],
+                        Toast.LENGTH_SHORT).show();
             }
         });
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://fakestoreapi.com/").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://fakestoreapi.com/")
+                .addConverterFactory(GsonConverterFactory.create()).build();
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);
-        final Call<List<Products>> productsCall = apiInterface.getAllProducts();
+        Call<List<Products>> productsCall = apiInterface.getAllProducts();
         productsCall.enqueue(new Callback<List<Products>>() {
             @Override
             public void onResponse(@NotNull Call<List<Products>> call, @NotNull Response<List<Products>> response) {
@@ -145,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             menuImageView = findViewById(R.id.menuImageView);
             feelingsImageView = findViewById(R.id.feelingsImageView);
             gridBTN = findViewById(R.id.gridBTN);
+            profilePic = findViewById(R.id.profile_iv);
         }
     }
 
@@ -193,6 +211,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Logoutt(MenuItem item) {
+        Toast.makeText(getApplicationContext(), "Bye 👋", Toast.LENGTH_SHORT).show();
+
         mAuth.signOut();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         drawerLayout.closeDrawers();
@@ -200,11 +220,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoCart(MenuItem item) {
-        startActivity(new Intent(getApplicationContext(), AccountActivity.class));
+        flag = 2;
+        Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+        intent.putExtra("FLAG", flag);
+        startActivity(intent);
         drawerLayout.closeDrawers();
     }
 
+    public void gotoAccount(View v) {
+        flag = 1;
+        Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+        intent.putExtra("FLAG", flag);
+        startActivity(intent);
+    }
 
+    public void gotoAccount(MenuItem item) {
+        flag = 1;
+        Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+        intent.putExtra("FLAG", flag);
+        startActivity(intent);
+        drawerLayout.closeDrawers();
+    }
 
 
 }

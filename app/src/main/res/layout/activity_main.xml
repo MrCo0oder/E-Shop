@@ -21,6 +21,28 @@
         android:hapticFeedbackEnabled="true"
         tools:context=".MainActivity">
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardVie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="12dp"
+            android:onClick="gotoAccount"
+            app:cardCornerRadius="30dp"
+            app:strokeColor="@color/colorPrimaryDark"
+            app:strokeWidth="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/profile_iv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                tools:ignore="ContentDescription" />
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_rv"
@@ -49,20 +71,21 @@
             android:id="@+id/cat_rv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
             app:layout_constraintBottom_toTopOf="@+id/product_rv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/feelingsImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/materialCardVie" />
 
 
         <ImageView
             android:id="@+id/feelingsImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/menuImageView"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/main_logo" />
 

@@ -18,4 +18,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="orders">Orders</string>
+    <string name="gender">Gender</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="designed_by_freepik">Designed by Freepik</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="title">Title</string>
 </resources>

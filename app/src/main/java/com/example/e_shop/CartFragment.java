@@ -1,3 +1,4 @@
+
 package com.example.e_shop;
 
 import android.os.Bundle;
@@ -22,8 +23,12 @@ import android.widget.Toast;
 import com.example.e_shop.model.CartItem;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.ObservableSnapshotArray;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,15 +39,18 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CartFragment extends Fragment {
     RecyclerView cartRv;
     Button placeOrderBTN;
+    ImageView noItems;
     FirebaseFirestore mFirebaseFirestore;
     FirestoreRecyclerAdapter adapter;
-
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -51,16 +59,18 @@ public class CartFragment extends Fragment {
         mFirebaseFirestore = FirebaseFirestore.getInstance();
         cartRv = view.findViewById(R.id.cartRV);
         placeOrderBTN = view.findViewById(R.id.placeOrder);
+        noItems = view.findViewById(R.id.noItemsIV);
+        noItems.setVisibility(View.VISIBLE);
 
 
         Query query = mFirebaseFirestore.collection("users")
                 .document(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .collection("cart");
 
+
         final FirestoreRecyclerOptions<CartItem> options = new FirestoreRecyclerOptions.Builder<CartItem>()
                 .setQuery(query, CartItem.class)
                 .build();
-
         adapter = new FirestoreRecyclerAdapter<CartItem, CartItemViewHolder>(options) {
             @NonNull
             @Override
@@ -69,26 +79,36 @@ public class CartFragment extends Fragment {
                 return new CartItemViewHolder(mView);
             }
 
+
             @Override
             protected void onBindViewHolder(@NonNull final CartItemViewHolder holder, final int position, @NonNull final CartItem model) {
+                noItems.setVisibility(View.INVISIBLE);
                 holder.title.setText(model.getTitle());
                 holder.quantity.setText(model.getQuantity() + "");
-                holder.price.setText(model.gettPrice() + " $ ( " + model.getPrice() + " )");
+                holder.price.setText(model.gettPrice() + " $ ( " + model.getPrice() + "$ )");
+
                 holder.remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getSnapshots().getSnapshot(position).getReference().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+                        try {
+                            getSnapshots().getSnapshot(position).getReference().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
 
-                                Toast.makeText(getActivity(), "Item removed from cart", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Item removed from cart", Toast.LENGTH_SHORT).show();
+                                    if (getSnapshots().isEmpty()) {
+                                        noItems.setVisibility(View.VISIBLE);
 
-                            }
-                        });
+                                    }
+                                }
 
+                            });
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println(e.getLocalizedMessage());
+                        }
                     }
                 });
-                Picasso.get().load(model.getImage()).into(holder.image, new Callback() {
+                Picasso.get().load(model.getImage()).into(holder.itemImage, new Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -98,11 +118,13 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onError(Exception e) {
 
+                        Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
                     }
                 });
-
-
             }
+
+
 
         };
         cartRv.setHasFixedSize(true);
@@ -115,7 +137,7 @@ public class CartFragment extends Fragment {
 
     private static class CartItemViewHolder extends ViewHolder {
         TextView title, price, quantity;
-        ImageView image;
+        ImageView itemImage;
         ImageButton remove;
 
         public CartItemViewHolder(@NonNull View itemView) {
@@ -123,18 +145,15 @@ public class CartFragment extends Fragment {
             title = itemView.findViewById(R.id.cart_title);
             price = itemView.findViewById(R.id.cart_totalprice);
             quantity = itemView.findViewById(R.id.cart_quantity);
-            image = itemView.findViewById(R.id.cart_itemimage);
+            itemImage = itemView.findViewById(R.id.cart_itemimage);
             remove = itemView.findViewById(R.id.removebtn);
-
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();
         adapter.startListening();
     }
-
     @Override
     public void onStop() {
         super.onStop();

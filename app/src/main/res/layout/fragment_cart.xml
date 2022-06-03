@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".CartFragment">
 
+    <ImageView
+        android:id="@+id/noItemsIV"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/noitems"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/cartRV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cartTextView" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRV"
         android:layout_width="match_parent"
@@ -55,4 +66,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

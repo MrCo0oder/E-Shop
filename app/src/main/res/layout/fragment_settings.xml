@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/addressTV2"
+        android:id="@+id/addressET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -19,8 +19,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView10"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView10"
-        app:layout_constraintTop_toTopOf="@+id/imageView10" />
+        app:layout_constraintTop_toTopOf="@+id/imageView10"
+        app:layout_constraintVertical_bias="0.454" />
 
     <ImageView
         android:id="@+id/imageView10"
@@ -59,7 +61,7 @@
         app:srcCompat="@drawable/ic_profile" />
 
     <EditText
-        android:id="@+id/fullnameTV2"
+        android:id="@+id/fullnameET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,7 +78,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView12" />
 
     <EditText
-        android:id="@+id/phoneTV2"
+        android:id="@+id/phoneET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -107,19 +109,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/saveBTN"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/rajdhani_semibold"
+        android:text="Save changes"
         app:icon="@drawable/ic_save"
         app:iconGravity="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addressTV2" />
+        app:layout_constraintTop_toBottomOf="@+id/currentLocationBTN" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/rajdhani_semibold"
@@ -130,4 +135,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/closeBTN" />
+
+    <Button
+        android:id="@+id/currentLocationBTN"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="#00F6436F"
+        android:text="Get Your Location"
+        android:textColor="#F50057"
+        app:icon="@drawable/ic_location"
+        app:iconTint="#F50057"
+        app:layout_constraintEnd_toEndOf="@+id/addressET"
+        app:layout_constraintStart_toStartOf="@+id/imageView10"
+        app:layout_constraintTop_toBottomOf="@+id/addressET"
+        app:strokeColor="#F50057"
+        app:strokeWidth="5dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

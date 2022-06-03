@@ -53,7 +53,6 @@
         android:ellipsize="end"
         android:fontFamily="@font/rajdhani_semibold"
         android:padding="6dp"
-        android:text=": ae38988@gmail.com"
         android:textColor="@color/fontsColor"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -67,21 +66,21 @@
         android:ellipsize="end"
         android:fontFamily="@font/rajdhani_semibold"
         android:padding="6dp"
-        tools:text=": 01069595665"
         android:textColor="@color/fontsColor"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/fullnameTV" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:id="@+id/c"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/ic_circle"
-        android:elevation="5dp"
+        android:background="@color/colorPrimary"
+        android:padding="8dp"
+        app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="180dp"
         app:cardElevation="5dp"
         app:cardMaxElevation="5dp"
@@ -90,14 +89,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="100dp"
-            android:layout_height="99dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/img"
-            tools:ignore="ContentDescription" />
+            app:cardCornerRadius="180dp">
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/designed_by_freepik"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/img"
+                tools:layout_editor_absoluteX="130dp"
+                tools:layout_editor_absoluteY="50dp" />
+
+        </androidx.cardview.widget.CardView>
+
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -111,9 +122,9 @@
         android:textColor="@color/fontsColor"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintEnd_toEndOf="@+id/c"
+        app:layout_constraintStart_toStartOf="@+id/c"
+        app:layout_constraintTop_toBottomOf="@+id/c" />
 
     <TextView
         android:id="@+id/fullnameTV"
@@ -128,6 +139,19 @@
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorAccent"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@+id/c"
+        app:layout_constraintEnd_toEndOf="@+id/c"
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_camera" />
 
     <View
         android:id="@+id/view3"
@@ -200,5 +224,16 @@
         app:layout_constraintStart_toEndOf="@+id/view4"
         app:layout_constraintTop_toTopOf="@+id/view4"
         android:focusable="true" />
+
+    <ProgressBar
+        android:id="@+id/progressBar5"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/c"
+        app:layout_constraintEnd_toEndOf="@+id/c"
+        app:layout_constraintStart_toStartOf="@+id/c"
+        app:layout_constraintTop_toTopOf="@+id/c" />
+
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
