@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:foregroundTint="#FFFFFF"
+        android:foregroundTintMode="add"
+        android:hapticFeedbackEnabled="true"
+        tools:context=".MainActivity">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_rv"
+            android:layout_width="0dp"
+            android:layout_height="1000dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_rv"
+            app:layout_constraintEnd_toEndOf="@+id/cat_rv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cat_rv"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_repeatCount="10"
+            app:lottie_repeatMode="reverse"
+            app:lottie_speed="2.0" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="@+id/product_rv"
+            app:layout_constraintEnd_toEndOf="@id/product_rv"
+            app:layout_constraintStart_toStartOf="@id/product_rv"
+            app:layout_constraintTop_toTopOf="@+id/product_rv"
+            app:layout_constraintVertical_bias="0.13999999"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_repeatCount="10"
+            app:lottie_repeatMode="reverse"
+            app:lottie_speed="2.0" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cat_rv"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feelingsImageView" />
+
+
+        <ImageView
+            android:id="@+id/feelingsImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/main_logo" />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/explore"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cat_rv"
+            app:srcCompat="@drawable/ic_explore" />
+
+        <TextView
+            android:id="@+id/exploreTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/rajdhani_semibold"
+            android:text="@string/explore"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+        <ImageButton
+            android:id="@+id/gridBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTintMode="screen"
+            android:checkable="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:src="@drawable/ic_grid"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/exploreTV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/exploreTV"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/menuImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTintMode="screen"
+            android:checkable="false"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:src="@drawable/ic_menu"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/feelingsImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/feelingsImageView"
+            app:srcCompat="@drawable/ic_menu"
+            tools:ignore="HardcodedText,OnClick" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:clickable="true"
+            android:clipToPadding="false"
+            android:focusable="true"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/feelingsImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/feelingsImageView">
+
+            <ImageView
+                android:id="@+id/profile_iv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="TOO"
+                android:src="@drawable/profilepicph"
+
+                tools:ignore="ContentDescription,HardcodedText" />
+        </androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.core.widget.NestedScrollView>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nv"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    app:menu="@menu/navigation_menu"/>
+</androidx.drawerlayout.widget.DrawerLayout>
