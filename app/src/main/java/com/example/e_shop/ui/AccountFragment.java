@@ -63,7 +63,6 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        Toast.makeText(getActivity(), "Swipe up for Options. 🔼", Toast.LENGTH_LONG).show();
         progressBar = view.findViewById(R.id.progressBar5);
         progressBar.setVisibility(View.VISIBLE);
         mAuth = FirebaseAuth.getInstance();
@@ -161,9 +160,7 @@ public class AccountFragment extends Fragment {
     }
 
     void uploadProfilePic(final Uri uri) {
-//        SimpleDateFormat formatter=new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.ENGLISH);
-//        Date n=new Date();
-//        String fileName=formatter.format(n);
+
         storageReference = FirebaseStorage.getInstance().getReference(mAuth.getUid() + "/pic");
         storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

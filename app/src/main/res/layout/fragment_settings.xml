@@ -23,7 +23,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView10"
         app:layout_constraintTop_toTopOf="@+id/imageView10"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintVertical_bias="0.454"
+        tools:ignore="Autofill,LabelFor" />
 
     <ImageView
         android:id="@+id/imageView10"
@@ -31,11 +32,12 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:foreground="@drawable/ic_home"
+        android:src="@drawable/ic_home"
         android:foregroundTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView11"
-        app:srcCompat="@drawable/ic_home" />
+        app:srcCompat="@drawable/ic_home"
+        android:contentDescription="@string/address" />
 
     <ImageView
         android:id="@+id/imageView11"
@@ -43,11 +45,12 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:foreground="@drawable/ic_phone"
+        android:src="@drawable/ic_phone"
         android:foregroundTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView12"
-        app:srcCompat="@drawable/ic_phone" />
+        app:srcCompat="@drawable/ic_phone"
+        android:contentDescription="@string/phone" />
 
     <ImageView
         android:id="@+id/imageView12"
@@ -55,11 +58,12 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
-        android:foreground="@drawable/ic_profile"
+        android:src="@drawable/ic_profile"
         android:foregroundTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/closeBTN"
-        app:srcCompat="@drawable/ic_profile" />
+        app:srcCompat="@drawable/ic_profile"
+        android:contentDescription="@string/full_name" />
 
     <EditText
         android:id="@+id/fullnameET"
@@ -76,7 +80,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView12"
-        app:layout_constraintTop_toTopOf="@+id/imageView12" />
+        app:layout_constraintTop_toTopOf="@+id/imageView12"
+        tools:ignore="Autofill,LabelFor" />
 
     <EditText
         android:id="@+id/phoneET"
@@ -88,41 +93,48 @@
         android:fontFamily="@font/rajdhani_semibold"
         android:inputType="phone"
         android:padding="6dp"
-        android:phoneNumber="true"
         android:textColor="@color/fontsColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView11"
-        app:layout_constraintTop_toTopOf="@+id/imageView11" />
+        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        android:importantForAutofill="no"
+        tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/closeBTN"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:gravity="right"
-        app:icon="@drawable/ic_close"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:checkable="false"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="20dp"
         app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:icon="@drawable/ic_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/saveBTN"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="@font/rajdhani_semibold"
-        android:text="Save changes"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:checkable="false"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="20dp"
         app:icon="@drawable/ic_save"
-        app:iconGravity="textEnd"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:iconPadding="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="#D81B60" />
 
     <TextView
@@ -130,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/rajdhani_semibold"
-        android:text="Edit"
+        android:text="@string/edit"
         android:textColor="@color/fontsColor"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/closeBTN"
@@ -143,7 +155,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:text="Get Your Location"
+        android:text="@string/get_your_location"
         android:textColor="#F50057"
         app:icon="@drawable/ic_location"
         app:layout_constraintEnd_toEndOf="@+id/addressET"

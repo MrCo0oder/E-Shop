@@ -69,20 +69,6 @@
             app:layout_constraintStart_toStartOf="@+id/cart_title"
             app:layout_constraintTop_toBottomOf="@+id/cart_quantity" />
 
-        <ImageButton
-            android:id="@+id/removebtn"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:cropToPadding="false"
-            android:onClick="switchM"
-            android:src="@drawable/ic_delete"
-            android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cart_itemimage" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -49,12 +49,11 @@ public class SettingsFragment extends Fragment {
     FirebaseFirestore mFirebaseFirestore;
     DocumentReference docRef;
     FusedLocationProviderClient fusedLocationProviderClient;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(SettingsFragment.this.getContext());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,7 +71,7 @@ public class SettingsFragment extends Fragment {
                     getLocation();
 
                 } else {
-                    ActivityCompat.requestPermissions(SettingsFragment.this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
 
                 }
             }

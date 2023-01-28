@@ -60,7 +60,7 @@ public class ProductsViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void getProducts() {
-        repository.getAllProducts().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> productsList.setValue(result), error -> Log.e("ViewModel", error.getMessage()));
+        repository.getAllProducts().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> productsList.postValue(result), error -> Log.e("ViewModel", error.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -81,7 +81,7 @@ public class ProductsViewModel extends ViewModel {
                 }
                 return newList;
             }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> categoriesList.setValue((ArrayList<ProductCategory>) result), error -> Log.e("ViewModel:Cats->", error.getMessage()));
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(result -> categoriesList.postValue((ArrayList<ProductCategory>) result), error -> Log.e("ViewModel:Cats->", error.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -105,7 +105,7 @@ public class ProductsViewModel extends ViewModel {
         repository.getMenClothingCategory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> menProductsList.setValue(result), error -> Log.e("ViewModel", error.getMessage()));
+                .subscribe(result -> menProductsList.postValue(result), error -> Log.e("ViewModel", error.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -113,6 +113,6 @@ public class ProductsViewModel extends ViewModel {
         repository.getWomenClothingCategory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> womenProductsList.setValue(result), error -> Log.e("ViewModel", error.getMessage()));
+                .subscribe(womenProductsList::postValue, error -> Log.e("ViewModel", error.getMessage()));
     }
 }
